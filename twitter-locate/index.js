@@ -1,6 +1,7 @@
 var http = require('http');
 var Twitter = require('twitter');
 var url = require('url');
+var fs = require('fs');
 
 var port = 8080;
 
@@ -23,6 +24,18 @@ var yesterday = yesterdayDate();
 
 var all_tweets = {};
 var tweetsByUser = {};
+
+var tweetCount = function() {
+  return Object.keys(all_tweets).length;
+}
+
+var usersCount = function() {
+  return Object.keys(tweetsByUser).length;
+}
+
+var estimatedUsersCount = function() {
+  return usersCount() * 13;
+}
 
 var recordTweet = function(tweet) {
   if(all_tweets[tweet.id] === undefined) {
@@ -98,16 +111,33 @@ var serveResponse = function(response, body) {
   response.end(JSON.stringify(body));
 }
 
+var serveFS = function(response, path) {
+  fs.readFile("dist" + path, 'utf8', function(err, data) {
+    if (err) {
+      response.writeHead(404);
+      response.end("This are not the files you're looking for");
+    } else {
+      response.writeHead(200);
+      if(path === "/index.html") {
+        data = data.replace("17,203", estimatedUsersCount());
+      }
+      response.end(data);
+    }
+  });
+}
+
 // Listen to the server response
 var server = http.createServer(function(req, res) {
   if(req.url === "/tweets") {
-    serveResponse(res, {counts: Object.keys(all_tweets).length});
+    serveResponse(res, {counts: tweetCount()});
   } else if(req.url ==="/users") {
-    serveResponse(res, {counts: Object.keys(tweetsByUser).length});
+    serveResponse(res, {counts: usersCount()});
   } else if(req.url ==="/counts") {
-      serveResponse(res, {tweets: Object.keys(all_tweets).length, users: Object.keys(tweetsByUser).length});
+    serveResponse(res, {tweets: tweetCount(), users: usersCount()});
+  } else if(req.url === "/") {
+    serveFS(res, "/index.html");
   } else {
-    serveResponse(res, "OK, Computer");
+    serveFS(res, req.url);
   }
 });
 

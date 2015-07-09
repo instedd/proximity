@@ -15,20 +15,41 @@
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
 
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
-    <script src="bluetoothle.js"></script>
+    <style>
+      .button-good, .button-bad  {
+        height: 150px;
+        font-size: 60px;
+      }
+    </style>
 
     <!-- your app's js -->
     <script src="js/app.js"></script>
+    <script src="js/ibeacon.service.js"></script>
+    <!-- <script src="js/ibeacon.directive.js"></script> -->
+    <script src="js/proximity.controller.js"></script>
   </head>
-  <body ng-app="starter">
+  <body ng-app="Proximity">
 
     <ion-pane>
       <ion-header-bar class="bar-stable">
         <h1 class="title">Ionic Blank Starter</h1>
       </ion-header-bar>
-      <ion-content>
+      <ion-content ng-controller="ProximityController">
+        <div class="row">
+          <div class="col">
+            <h3>How are you feeling?</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <button on-tap="getBeacon()" class="button button-balanced button-block button-good">
+              <i class="ion-happy"></i>
+            </button>
+            <button on-tap="" class="button button-assertive  button-block button-bad">
+              <i class="ion-sad"></i>
+            </button>
+          </div>
+        </div>
       </ion-content>
     </ion-pane>
   </body>

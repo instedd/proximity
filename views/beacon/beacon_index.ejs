@@ -1,0 +1,146 @@
+<div style="margin-top: 60px">
+    <div class="row"
+         style="padding: 0;margin: 0">
+        <div class="col-md-2 sidebar">
+            <%- partial('../admin/sidebar.ejs') %>
+        </div>
+        <div class="col-md-10">
+            <div style="margin-left: 50px;margin-right: 50px">
+                <h1 class="page-header">Manage Beacons</h1>
+                <% if (beacons.length > 0) { %>
+                <div class="row">
+                    <div class="panel panel-primary filterable">
+                        <div class="panel-heading">
+                            <h1 class="panel-title">Beacons</h1>
+                            <div class="pull-right">
+                                <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table">
+                                <thead>
+                                <tr class="filters">
+                                    <th><input type="text"
+                                               class="form-control"
+                                               placeholder="#"
+                                               disabled></th>
+                                    <th><input type="text"
+                                               class="form-control"
+                                               placeholder="Latitude"
+                                               disabled></th>
+                                    <th><input type="text"
+                                               class="form-control"
+                                               placeholder="Longitude"
+                                               disabled></th>
+                                    <th><input type="text"
+                                               class="form-control"
+                                               placeholder="Description"
+                                               disabled></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% for(var i = 0; i < beacons.length; i++) { %>
+                                <tr>
+                                    <td><%= beacons[i].id %></td>
+                                    <td><%= beacons[i].lat %></td>
+                                    <td><%= beacons[i].long %></td>
+                                    <td><%= beacons[i].description %></td>
+                                    <td width="110">
+                                        <a href="beacon/delete/<%= beacons[i].id %>"
+                                           title="delete"
+                                           class="btn btn-warning btn-sm"><i class="glyphicon glyphicon-remove-sign"></i></a>
+                                    </td>
+                                </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <% } else { %>
+                <div class="row">
+                    <div class="alert alert-info"
+                         role="alert"><strong>Data is empty.</strong> Add some beacons below</div>
+                </div>
+                <% } %>
+                <%- partial('../partials/flash.ejs') %>
+                <div class="row">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h1 class="panel-title">Add Beacon</h1>
+                        </div>
+                        <div class="panel-body">
+                            <form action="/beacon/create"
+                                  method="post">
+                                <input type="hidden"
+                                       name="client"
+                                       value="dashboard">
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="beacon_id">Beacon UUID</label>
+                                            <input type="text"
+                                                   name="id"
+                                                   class="form-control"
+                                                   id="beacon_id"
+                                                   placeholder="Beacon UUID">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="beacon_description">Description</label>
+                                            <input type="text"
+                                                   name="description"
+                                                   class="form-control"
+                                                   id="beacon_description"
+                                                   placeholder="Description">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="app_latitude">Latitude</label>
+                                            <input type="tel"
+                                                   name="lat"
+                                                   class="form-control"
+                                                   id="app_latitude"
+                                                   placeholder="Latitude for the center of the map">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="app_longitude">Longitude</label>
+                                            <input type="tel"
+                                                   name="long"
+                                                   class="form-control"
+                                                   id="app_longitude"
+                                                   placeholder="Longitude for the center of the map">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button"
+                                                style="margin-top: 30px"
+                                                id="location_picker"
+                                                data-toggle="modal" data-target="#pickerModal"
+                                                class="btn btn-info btn-sm btn-block">Pick a location</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <button type="submit"
+                                                class="btn btn-success btn-lg btn-block">
+                                            <i class="glyphicon glyphicon-ok"></i>
+                                            Save</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
